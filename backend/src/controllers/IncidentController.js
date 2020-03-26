@@ -7,9 +7,17 @@ module.exports = {
         const [count] = await connection('incidents').count();
 
         const incidents = await connection('incidents')
+            .join('ongs', 'ongs.id', '=', 'incidents.ong_id') //join com a tabela ongs
             .limit(5) //limitar em 5 registros por página
             .offset((page - 1) * 5)
-            .select('*');
+            .select([ //trazer todos os campos de incidents e ongs
+                'incidents.*',
+                'ongs.name',
+                'ongs.email',
+                'ongs.whatsapp',
+                'ongs.city',
+                'ongs.uf',
+            ]);
 
         //retorna o total de Casos no cabeçalho da resposta
         response.header('X-Total-Count', count['count(*)']);
