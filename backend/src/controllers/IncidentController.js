@@ -2,10 +2,20 @@ const connection = require('../database/connection');
 
 module.exports = {
     async index(request, response) {
-        const incidents = await connection('incidents').select('*');
+        const { page = 1 } = request.query;
+
+        const [count] = await connection('incidents').count();
+
+        const incidents = await connection('incidents')
+            .limit(5) //limitar em 5 registros por página
+            .offset((page - 1) * 5)
+            .select('*');
+
+        //retorna o total de Casos no cabeçalho da resposta
+        response.header('X-Total-Count', count['count(*)']);
+        console.log(count);
 
         return response.json(incidents);
-
     },
 
     async create(request, response) {
