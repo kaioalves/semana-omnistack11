@@ -31,7 +31,7 @@ export default function Register() {
         try {
             const response = await api.post('ongs', data);
 
-            alert(`Seu ID se acesso: ${response.data.id}`);
+            alert(`Seu ID de acesso: ${response.data.id}`);
 
             history.push('/')
         } catch (err) {
@@ -76,7 +76,7 @@ export default function Register() {
 
                     <div className="input-group">
                         <input
-                            laceholder="Cidade"
+                            placeholder="Cidade"
                             value={city}
                             onChange={e => setCity(e.target.value)}
                         />
